@@ -1,16 +1,14 @@
-# Module 10: Introduction to Application Programming Interfaces
+# Introduction to Application Programming Interfaces
 
-## Overview
 The term _*Application Programming Interface*_ (API, for short) encompasses a broad set of utilities (protocols, tools) used for building software. In fact, the term API could appropriately describe some of the libraries we've been using in R, such as `DPLYR`. The general pattern used by `DPLRY` and steps necessary for using it are referred to as it's API. This is well described on [WikiPedia](https://en.wikipedia.org/wiki/Application_programming_interface):
 
 >the API describes and prescribes the expected behavior while the library is an _actual implementation_ of this set of rules
 
 In addition to exposing _functions_ for buidling software, APIs are often built to expose _data_ components. The focus of this learning module is to focus on accessing data from APIs that expose _data_ as their primary function.
 
-<!-- START doctoc -->
-<!-- END doctoc -->
 
-## Resources
+Helpful links:
+
 - [WikiPedia- APIS](https://en.wikipedia.org/wiki/Application_programming_interface)
 - [REST APIs](https://en.wikipedia.org/wiki/Application_programming_interface)
 - [JSON View Extension](https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc?hl=en)
