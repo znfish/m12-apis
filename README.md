@@ -73,7 +73,7 @@ Most REST APIs will return your data in JavaScript Object Notation (**JSON**) fo
 ```
 The corollary to a JSON object in R is a **list of lists**. A list can have key-value pairs, where the _names_ of your items are your _keys_, and the elements stored in those locations are the _values_. And, as with JSON objects, these can be nested, meaning that your _values_ can themselves be _lists_ with their own set of key-value pairs.
 
-To practice requesting data from the Spotify API, see [exercise-2](exercise-2).
+To practice requesting data from the Spotify API, see [exercise-2](http://github.com/info201-s17/m12-apis/tree/master/exercise-2).
 
 ## Flattening Data
 One challenge of working with data from APIs is making sure that the data is in the proper format. In order to ask questions of our datasets, we'll still want to put them in **dataframes**. Unfortunately, sometimes the nested nature of JSON data will result in unintended data structures. In particular, you may end up with a dataframe in which **one of the columns is a dataframe**. For example,
@@ -97,4 +97,4 @@ people <- flatten(people)
 people$favorites.food # this just got created
 ```
 
-To practice working with flattening data, see [exercise-3](exercise-3).
+To practice working with flattening data, see [exercise-3](http://github.com/info201-s17/m12-apis/tree/master/exercise-3).
