@@ -1,15 +1,23 @@
-### Exercise 3 ###
-library(jsonlite)
+### Exercise 1 ###
+
+# libraries
 library(dplyr)
-# Use the `load` function to load in the nelly_tracks file.  That should make the data.frame
-# `top_nelly` available to you
+
+# We'll be using the mtcars dataset -- adding rowname as a column
+vehicle <- add_rownames(mtcars, var='car')
 
 
-# Use the `flatten` function to flatten the data.frame -- note what differs!
+######## buggy ######### ----------------------------------------------
 
+# Function to debug:
+# Given a number of forward gears and a number of cylinders, what is the 
+# Name of the car with the best mpg?
+BestGearsCyl <- functon(gears, cylinders) {
+  ret <- vehicles %>%  
+        filter(gear == gears, cyl == cylinders) %>% 
+        filter(mgp = max(mpg)) %>% 
+        select(car)
+}
 
-# Use your `dplyr` functions to get the number of the songs that appear on each albumt
-
-
-
-# Bonus: perform both of the steps above in one line (one statement)
+# Get the best mpg car for 6 cylinder cars with 4 gears
+answer <- BestGearsCyl(6, 4)
