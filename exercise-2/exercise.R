@@ -1,49 +1,71 @@
 ### Exercise 2 ###
 
-# As you noticed, it often takes multiple queries to retrieve the desired information.
-# This is a perfect situation in which writing a function will allow you to better structure your
-# code, and give a name to a repeated task.
-library(jsonlite)
-setwd('~/Documents/info-201/m10-apis/exercise-2/')
+# Load the httr and jsonlite libraries for accessing data
+library("httr")
+library("jsonlite")
+
+# Create a `base.uri` variable that holds the base uri. You wil then paste endpoints to this base.
+base.uri <- "https://api.spotify.com"
 
 
-# Write a function that allows you to specify an artist, and returns the top 10 tracks of that artist
+## As you may have noticed, it often takes multiple queries to retrieve the desired information.
+## This is a perfect situation in which writing a function will allow you to better structure your
+## code, and give a name to a repeated task!
+
+
+# Define a function `TopTrackSearch` that takes in an artist name as an argument,
+# and returns the top 10 tracks (in the US) by that artist
 TopTrackSearch <- function(artist) {
-  # Search base
-  base <- 'https://api.spotify.com/v1/'
-  
-  # Search artist
-  artist.query <- paste0(base, 'search?', 'q=', artist, '&type=artist')
-  
-  # Artist info 
-  artist.info <- fromJSON(artist.query)
+  # Artist info
+  resource <- "/v1/search"
+  uri = paste0(base.uri, resource)
+  query.params <- list(q = artist, type = "artist")
+
+  response <- GET(uri, query = query.params)
+
+  artist.info <- fromJSON(content(response, "text"))
   artist.id <- artist.info$artists$items$id[1]
-  
+
   # Get albums
-  album.query <- paste0(base, 'artists/', artist.id, '/top-tracks?country=US')
-  top.tracks <- fromJSON(album.query)
+  resource <- paste0("/v1/artists/",artist.id,"/top-tracks")
+  uri = paste0(base.uri, resource)
+  query.params <- list(country="US")
+  response <- GET(uri, query = query.params)
+
+  top.tracks <- fromJSON(content(response, "text"))
+
   return(top.tracks$tracks)
 }
 
-# What are the top 10 tracks by Nelly?
-top.nelly <- TopTrackSearch('Nelly')
+# What are the top 10 tracks by Beyonce?
+top.tracks <- TopTrackSearch('Beyonce')
 
-# Save top_nelly
-save(top.nelly, file="nelly_tracks.Rdata")
+# Use the `flatten` function to flatten the data.frame -- note what differs!
+top.tracks <- flatten(top.tracks)
 
-### Bonus ### 
-# Write a function that allows you to specify a search type (artist, album, etc.), and a string, 
+# Use the `save()` function to save the flattened data frame to a file `beyonce.Rdata`
+save(top.tracks, file="beyonce.Rdata")
+
+# Use your `dplyr` functions to get the number of the songs that appear on each album
+num.album <- top.tracks %>%
+  group_by(album.name) %>%
+  summarise(n = n()) %>%
+  arrange(-n)
+num.album
+
+
+### Bonus ###
+# Write a function that allows you to specify a search type (artist, album, etc.), and a string,
 # that returns the album/artist/etc. page of interest
 SpotifySearch <- function(type, string) {
-  # Search base
-  base <- 'https://api.spotify.com/v1/'
-  
-  # Search artist
-  search <- paste0(base, 'search?', 'q=', string, '&type=', type)
-  
-  # Artist info 
-  info <- fromJSON(search)
-  return(info)
+
+  resource <- "/v1/search"
+  uri = paste0(base.uri, resource)
+  query.params <- list(q = string, type = type)
+
+  response <- GET(uri, query = query.params)
+
+  return(flatten(fromJSON(content(response,"text"))))
 }
 
 # Search albums with the word "Sermon"
