@@ -1,22 +1,24 @@
 ### Exercise 5 ###
 library(jsonlite)
 library(dplyr)
+library(httr)
 
 # Write a function that allows you to specify a movie, then does the following:
 GetReview <- function(movie) {
   
-  # Replace all of the spaces in your movie title with plus signs (+)
-  movie.no.spaces <- gsub(' ', '+', movie)
-  
   # Construct a search query using YOUR api key
   # The base URL is https://api.nytimes.com/svc/movies/v2/reviews/search.json?
+  # Your parameters should include a "query" and an "api_key"
+  # Note: the HTTR library will take care of spaces in the arguments
   # See the interactive console for more detail:https://developer.nytimes.com/movie_reviews_v2.json#/Console/GET/reviews/search.json
   base.url <- 'https://api.nytimes.com/svc/movies/v2/reviews/search.json?'
-  api.key <- "&api-key=2d3963db35bb4d0f88f17a193b8c62e8"
-  request <- paste0(base.url, 'query=', movie.no.spaces, api.key)
+  api.key <- "2d3963db35bb4d0f88f17a193b8c62e8"
+  query.params <- list(query=movie, api_key = api.key)
+  response <- GET(base.url, query = query.params)
+  body <- content(response, "text")
   
   # Request data using your search query
-  results <- fromJSON(request)
+  results <- fromJSON(body)
   
   # What type of variable does this return?
   
